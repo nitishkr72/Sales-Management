@@ -2,15 +2,13 @@ package com.example.SalesManagement.Controller;
 
 import com.example.SalesManagement.Exception.ResourceNotFoundException;
 import com.example.SalesManagement.Model.*;
-import com.example.SalesManagement.Objects.MonthlySales;
-import com.example.SalesManagement.Objects.MonthlySalesData;
-import com.example.SalesManagement.Objects.ProductSold_Ids;
-import com.example.SalesManagement.Objects.TotalSales;
+import com.example.SalesManagement.Objects.*;
 import com.example.SalesManagement.Service.EmployeeService;
 import com.example.SalesManagement.Service.LoginService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.text.ParseException;
 import java.util.List;
 
 @RestController
@@ -22,6 +20,7 @@ public class EmployeeController {
 
     @Autowired
     private EmployeeService employeeService;
+
 
     @PostMapping("/Login")
     public Employee empLogin(@RequestBody LoginData loginData)
@@ -74,7 +73,7 @@ public class EmployeeController {
     }
 
     @PostMapping("/sellProduct")
-    public ProductSold sellProduct(@RequestBody ProductSold_Ids productSold_ids)
+    public dummyData sellProduct(@RequestBody ProductSold_Ids productSold_ids)
     {
         System.out.println("Sell Product is Triggered");
         System.out.println(productSold_ids.geteId());
@@ -87,17 +86,38 @@ public class EmployeeController {
         return employeeService.findAllProductsSoldById(id);
     }
 
-//    @PostMapping("/myTotalCommision")
-//    public float getMyCommision(@RequestBody  List<ProductSold> productsSold)
-//    {
-//        System.out.println("My Total Commision is Triggered " + productsSold);
-//        return employeeService.getMyCommision(productsSold);
-//    }
-
     @GetMapping("/sales-by-id/{id}")
     public List<MonthlySalesData> getSalesById(@PathVariable int id)
     {
         System.out.println("GetSalesBy Id is Triggered");
         return employeeService.getSalesDataById(id);
     }
+
+    @GetMapping("/sales-by-id-in-month/{str}")
+    public List<MonthlySalesData> getSalesByEmployeeInMonth(@PathVariable String str)
+    {
+        System.out.println("Get Sales By Employee In Month is Triggered " + str);
+        return employeeService.getSalesByEmployeeInMonth(str);
+    }
+
+    @GetMapping("/getEmployeeDetails/{empId}")
+    public List<Employee> getEmployeeByEmpId(@PathVariable String empId)
+    {
+        System.out.println("Get Employee By Id is Triggered");
+        return employeeService.getEmployeeByEmpId(empId);
+    }
+
+    @GetMapping("/getSalesByMonth/{str}")
+    public List<MonthlySales> getEmployeeById(@PathVariable String str)
+    {
+        System.out.println("Get Sales By Month is Triggered " + str);
+        return employeeService.getSalesByMonth(str);
+    }
+
+    @GetMapping("/dataTotalQuota/{str}")
+    public MonthlyQuotas getMonthlyById(@PathVariable String str) throws ParseException {
+        System.out.println(str);
+        return employeeService.getMonthlyQuota(str);
+    }
+
 }

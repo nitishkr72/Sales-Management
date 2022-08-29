@@ -9,6 +9,7 @@ public class MonthlySalesData {
 
     private List<TotalSales> totalSalesinMonth;
 
+
     public MonthlySalesData()
     {
         super();

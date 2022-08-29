@@ -7,17 +7,25 @@ import com.example.SalesManagement.Objects.MonthlySalesData;
 import com.example.SalesManagement.Objects.TotalSales;
 import com.example.SalesManagement.Repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.http.ResponseEntity;
+import org.springframework.orm.hibernate5.LocalSessionFactoryBean;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.text.DateFormatSymbols;
 import java.util.ArrayList;
 import java.util.List;
 
 @Service
 public class AdminService {
+
     @Autowired
     private AdminRepository adminrepository;
+
+    @Autowired
+    private DummyDataRepository dummyDataRepository;
 
     @Autowired
     private EmployeeRepository employeeRepository;
@@ -190,11 +198,11 @@ public class AdminService {
         return productRepository.findById(id).get();
     }
 
-    public List<MonthlySales> getAllProductsSold()
+
+    public List<MonthlySales> getData(List<ProductSold> productsSold)
     {
         List<MonthlySales> monthlySales = new ArrayList<>();
         List<ProductSold> productsSoldInMonth = new ArrayList<>();
-        List<ProductSold> productsSold = productSoldRepository.findAll();
         String month = productsSold.get(0).getDateSold().substring(5,7);
         String year = productsSold.get(0).getDateSold().substring(0,4);
         String date = productsSold.get(0).getDateSold().substring(0,7);
@@ -219,8 +227,9 @@ public class AdminService {
                     dummy.add(productSold1);
                 }
                 monthlySale.setProductsSold(dummy);
+                float total = employeeService.getTotalSales(dummy);
+                monthlySale.setTotalSales(total);
                 monthlySale.setCommision(employeeService.commission(dummy));
-                monthlySale.setTotalSales(employeeService.getTotalSales(dummy));
                 monthlySales.add(monthlySale);
                 prevMonth = month;
                 productsSoldInMonth.clear();
@@ -241,6 +250,12 @@ public class AdminService {
         monthlySales.add(monthlySale);
         return monthlySales;
     }
+    public List<MonthlySales> getAllProductsSold()
+    {
+        List<ProductSold> productsSold = productSoldRepository.findAll();
+        return getData(productsSold);
+    }
+
 
     public List<CommisionModel> getAllCommisionModels()
     {
@@ -320,4 +335,59 @@ public class AdminService {
         monthlyData.add(monthlySalesData);
         return monthlyData;
     }
+
+    public List<MonthlySales> getAllProductsSoldInMonth(String str) {
+        List<ProductSold> productsSold = productSoldRepository.findAll();
+//        int ind = str.indexOf("d");
+        List<ProductSold> productSoldInMonth = new ArrayList<>();
+//        String month = str.substring(ind+1, ind+8);
+        for(ProductSold productSold : productsSold)
+        {
+            if(productSold.getDateSold().substring(0,7).equals(str))
+            {
+                productSoldInMonth.add(productSold);
+            }
+        }
+        return getData(productSoldInMonth);
+    }
+
+    public List<MonthlySalesData> getTotalSalesInMonth(String str) {
+        List<ProductSold> productsSold = productSoldRepository.findAll();
+        List<ProductSold> productsSoldInMonth = new ArrayList<>();
+        for(ProductSold productSold : productsSold)
+        {
+            if(str.equals(productSold.getDateSold().substring(0,7)))
+            {
+                productsSoldInMonth.add(productSold);
+            }
+        }
+        return getSales(productsSoldInMonth);
+    }
+
+    public List<dummyData> getAllPendingRequests() {
+        return dummyDataRepository.findAll();
+    }
+
+    public List<dummyData> deletePendingRequestById(String productId) {
+        dummyDataRepository.deleteByProductId(productId);
+        return dummyDataRepository.findAll();
+    }
+
+    public List<dummyData> approvePendingRequest(String productId) {
+        ProductSold productSold = new ProductSold();
+        dummyData = dummyDataRepository.findByProductId(productId);
+
+
+    }
+
+    public List<dummyData>
+
+//    public void save(MultipartFile infile) {
+//        try {
+//            List<ProductSold> productSolds = ReadingSheet.convertExcelToListOfProduct(infile.getInputStream());
+//            productSoldRepository.saveAll(productSolds);
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+//    }
 }

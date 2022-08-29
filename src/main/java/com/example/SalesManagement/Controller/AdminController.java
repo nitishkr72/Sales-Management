@@ -5,18 +5,19 @@ import com.example.SalesManagement.Exception.ResourceNotFoundException;
 import com.example.SalesManagement.Model.*;
 import com.example.SalesManagement.Objects.MonthlySales;
 import com.example.SalesManagement.Objects.MonthlySalesData;
-import com.example.SalesManagement.Objects.TotalSales;
-import com.example.SalesManagement.Repository.CommisionModelRepository;
 import com.example.SalesManagement.Service.LoginService;
 import com.example.SalesManagement.Service.AdminService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.stereotype.Repository;
+import org.springframework.orm.hibernate5.LocalSessionFactoryBean;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
-import java.util.Optional;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/Admin")
@@ -179,6 +180,12 @@ public class AdminController {
         return adminService.getAllProductsSold();
     }
 
+    @GetMapping("/productsoldByMonth/{str}")
+    public List<MonthlySales> getProductSoldByMonth(@PathVariable String str)
+    {
+        return adminService.getAllProductsSoldInMonth(str);
+    }
+
     @GetMapping("/CommisionModels")
     public List<CommisionModel> getAllCommisionModels()
     {
@@ -203,4 +210,46 @@ public class AdminController {
         System.out.println("Total Sales is Triggered");
         return adminService.getTotalSales();
     }
+
+    @GetMapping("/total-sales-in-month/{str}")
+    public List<MonthlySalesData> getTotalSalesInMonth(@PathVariable String str)
+    {
+        System.out.println("Total Sales In Month is triggered");
+        return adminService.getTotalSalesInMonth(str);
+    }
+
+    @GetMapping("/get-pending-requests")
+    public List<dummyData> getPendingRequests()
+    {
+        System.out.println("Get Pending Requests is Triggered");
+        return adminService.getAllPendingRequests();
+    }
+
+    @DeleteMapping("delete-request-byId/{pId}")
+    public List<dummyData> deletePendingRequestById(@PathVariable String pId)
+    {
+        return adminService.deletePendingRequestById(pId);
+    }
+
+    @GetMapping("approve-request-by-Id/${pid}")
+    public List<dummyData> approveRequestById(@PathVariable String pId)
+    {
+        return adminService.approvePendingRequest(pId);
+    }
+
+
+//    @PostMapping("/productSold/upload-file")
+//    public ResponseEntity<?> upload(@RequestParam("file") MultipartFile file) {
+//        if (ReadingSheet.checkExcelFormat(file)) {
+//            //true
+//
+//            this.adminService.save(file);
+//
+//            return ResponseEntity.ok(Map.of("message", "File is uploaded and data is saved to db"));
+//
+//
+//        }
+//        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Please upload excel file ");
+//    }
+
 }
