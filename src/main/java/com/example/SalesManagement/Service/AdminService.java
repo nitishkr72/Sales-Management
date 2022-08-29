@@ -368,24 +368,19 @@ public class AdminService {
         return dummyDataRepository.findAll();
     }
 
-    public List<dummyData> deletePendingRequestById(int productId) {
-        dummyDataRepository.deleteById(productId);
+    public List<dummyData> deletePendingRequestById(String productId) {
+        dummyDataRepository.deleteByProductId(productId);
         return dummyDataRepository.findAll();
     }
 
-    public List<dummyData> approvePendingRequest(int productId) {
+    public List<dummyData> approvePendingRequest(String productId) {
         ProductSold productSold = new ProductSold();
-        dummyData data = dummyDataRepository.findById(productId).get();
-        productSold.setProductId(data.getProductId());
-        productSold.setEmpId(data.getEmpId());
-        productSold.setDateSold(data.getDateSold());
-        productSold.setTypeId(data.getTypeId());
-        productSold.setCost(data.getCost());
-        productSoldRepository.save(productSold);
-        dummyDataRepository.deleteById(productId);
-        return dummyDataRepository.findAll();
+        dummyData = dummyDataRepository.findByProductId(productId);
+
 
     }
+
+    public List<dummyData>
 
 //    public void save(MultipartFile infile) {
 //        try {
