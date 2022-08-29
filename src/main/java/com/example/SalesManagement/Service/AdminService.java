@@ -368,19 +368,40 @@ public class AdminService {
         return dummyDataRepository.findAll();
     }
 
-    public List<dummyData> deletePendingRequestById(String productId) {
-        dummyDataRepository.deleteByProductId(productId);
+    public List<dummyData> deletePendingRequestById(int productId) {
+        dummyDataRepository.deleteById(productId);
         return dummyDataRepository.findAll();
     }
 
-    public List<dummyData> approvePendingRequest(String productId) {
+    public List<dummyData> approvePendingRequest(int productId) {
         ProductSold productSold = new ProductSold();
-        dummyData = dummyDataRepository.findByProductId(productId);
+        dummyData data = dummyDataRepository.findById(productId).get();
+        productSold.setDateSold(data.getDateSold());
+        productSold.setProductId(data.getProductId());
+        productSold.setCost(data.getCost());
+        productSold.setEmpId(data.getEmpId());
+        productSold.setTypeId(data.getTypeId());
+        productSoldRepository.save(productSold);
+        dummyDataRepository.deleteById(productId);
+        return dummyDataRepository.findAll();
 
 
     }
 
-    public List<dummyData>
+    public String approveAllPendingRequests() {
+        List<dummyData> allData = dummyDataRepository.findAll();
+        for(dummyData data : allData )
+        {
+            ProductSold productSold = new ProductSold();
+            productSold.setTypeId(data.getTypeId());
+            productSold.setProductId(data.getProductId());
+            productSold.setDateSold(data.getDateSold());
+            productSold.setCost(data.getCost());
+            productSold.setEmpId(data.getEmpId());
+            productSoldRepository.save(productSold);
+        }
+        return "Approved Successfully";
+    }
 
 //    public void save(MultipartFile infile) {
 //        try {

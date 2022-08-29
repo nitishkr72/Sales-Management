@@ -232,21 +232,28 @@ public class AdminController {
         return adminService.deletePendingRequestById(pId);
     }
 
-    @PutMapping("approve-request-by-Id/{pid}")
+    @PutMapping("approve-request-by-Id/{pId}")
     public List<dummyData> approveRequestById(@PathVariable int pId)
     {
         System.out.println("Approve Request is Triggered");
         return adminService.approvePendingRequest(pId);
     }
 
-
-    @PostMapping("/product-sold-datas/upload")
-    public ResponseEntity<?> upload(@RequestParam("file") MultipartFile file) {
-        if(Helper.checkExcelFormat(file)) {
-            this.adminService.saveAllProductSoldData(file);
-            return ResponseEntity.ok(Map.of("message", "File is uploaded and data is saved to db"));
-        }
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Please upload excel file ");
+    @PutMapping("approve-all-pending-requests")
+    public String approveAllRequests()
+    {
+        System.out.println("Approve all pending requests is Triggered");
+        return adminService.approveAllPendingRequests();
     }
+
+
+//    @PostMapping("/product-sold-datas/upload")
+//    public ResponseEntity<?> upload(@RequestParam("file") MultipartFile file) {
+//        if(Helper.checkExcelFormat(file)) {
+//            this.adminService.saveAllProductSoldData(file);
+//            return ResponseEntity.ok(Map.of("message", "File is uploaded and data is saved to db"));
+//        }
+//        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Please upload excel file ");
+//    }
 
 }
