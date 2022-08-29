@@ -2,6 +2,7 @@ package com.example.SalesManagement.Controller;
 
 
 import com.example.SalesManagement.Exception.ResourceNotFoundException;
+import com.example.SalesManagement.Helper.Helper;
 import com.example.SalesManagement.Model.*;
 import com.example.SalesManagement.Objects.MonthlySales;
 import com.example.SalesManagement.Objects.MonthlySalesData;
@@ -238,18 +239,13 @@ public class AdminController {
     }
 
 
-//    @PostMapping("/productSold/upload-file")
-//    public ResponseEntity<?> upload(@RequestParam("file") MultipartFile file) {
-//        if (ReadingSheet.checkExcelFormat(file)) {
-//            //true
-//
-//            this.adminService.save(file);
-//
-//            return ResponseEntity.ok(Map.of("message", "File is uploaded and data is saved to db"));
-//
-//
-//        }
-//        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Please upload excel file ");
-//    }
+    @PostMapping("/product-sold-datas/upload")
+    public ResponseEntity<?> upload(@RequestParam("file") MultipartFile file) {
+        if(Helper.checkExcelFormat(file)) {
+            this.adminService.saveAllProductSoldData(file);
+            return ResponseEntity.ok(Map.of("message", "File is uploaded and data is saved to db"));
+        }
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Please upload excel file ");
+    }
 
 }
