@@ -243,6 +243,7 @@ public class AdminController {
     public String approveAllRequests()
     {
         System.out.println("Approve all pending requests is Triggered");
+        System.out.println("Approve all pending requests is Triggered");
         return adminService.approveAllPendingRequests();
     }
 
