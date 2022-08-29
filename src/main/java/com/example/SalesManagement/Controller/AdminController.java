@@ -226,14 +226,15 @@ public class AdminController {
     }
 
     @DeleteMapping("delete-request-byId/{pId}")
-    public List<dummyData> deletePendingRequestById(@PathVariable String pId)
+    public List<dummyData> deletePendingRequestById(@PathVariable int pId)
     {
         return adminService.deletePendingRequestById(pId);
     }
 
-    @GetMapping("approve-request-by-Id/${pid}")
-    public List<dummyData> approveRequestById(@PathVariable String pId)
+    @PutMapping("approve-request-by-Id/{pid}")
+    public List<dummyData> approveRequestById(@PathVariable int pId)
     {
+        System.out.println("Approve Request is Triggered");
         return adminService.approvePendingRequest(pId);
     }
 

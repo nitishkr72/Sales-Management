@@ -6,7 +6,4 @@ import org.springframework.data.jpa.repository.Query;
 
 public interface DummyDataRepository extends JpaRepository<dummyData, Integer> {
 
-    @Query(value = "DELETE FROM sales.dummyData WHERE productId = : productId",
-           nativeQuery = true)
-    void deleteByProductId(String productId);
 }
