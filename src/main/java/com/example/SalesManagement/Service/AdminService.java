@@ -400,6 +400,7 @@ public class AdminService {
             productSold.setEmpId(data.getEmpId());
             productSoldRepository.save(productSold);
         }
+        dummyDataRepository.deleteAll();
         return "Approved Successfully";
     }
 
