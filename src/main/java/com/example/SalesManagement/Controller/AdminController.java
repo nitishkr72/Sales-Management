@@ -43,8 +43,7 @@ public class AdminController {
             {
                 if(a.getPassword().equals(admin.getPassword()))
                 {
-                    Admin adminProfile = adminService.getAdminProfile(admin.getUsername());
-                    return adminProfile;
+                    return adminService.getAdminProfile(admin.getUsername());
                 }
             }
         }
@@ -248,13 +247,13 @@ public class AdminController {
     }
 
 
-//    @PostMapping("/product-sold-datas/upload")
-//    public ResponseEntity<?> upload(@RequestParam("file") MultipartFile file) {
-//        if(Helper.checkExcelFormat(file)) {
-//            this.adminService.saveAllProductSoldData(file);
-//            return ResponseEntity.ok(Map.of("message", "File is uploaded and data is saved to db"));
-//        }
-//        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Please upload excel file ");
-//    }
+    @PostMapping("/product-sold-data/upload")
+    public ResponseEntity<?> upload(@RequestParam("file") MultipartFile file) {
+        if(Helper.checkExcelFormat(file)) {
+            this.adminService.save(file);
+            return ResponseEntity.ok(Map.of("message", "File is uploaded and data is saved to db"));
+        }
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Please upload excel file ");
+    }
 
 }

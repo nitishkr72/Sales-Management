@@ -1,6 +1,7 @@
 package com.example.SalesManagement.Service;
 
 import com.example.SalesManagement.Exception.ResourceNotFoundException;
+import com.example.SalesManagement.Helper.Helper;
 import com.example.SalesManagement.Model.*;
 import com.example.SalesManagement.Objects.MonthlySales;
 import com.example.SalesManagement.Objects.MonthlySalesData;
@@ -404,12 +405,12 @@ public class AdminService {
         return "Approved Successfully";
     }
 
-//    public void save(MultipartFile infile) {
-//        try {
-//            List<ProductSold> productSolds = ReadingSheet.convertExcelToListOfProduct(infile.getInputStream());
-//            productSoldRepository.saveAll(productSolds);
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-//    }
+    public void save(MultipartFile infile) {
+        try {
+            List<dummyData> dummyDataList = Helper.convertExcelToListOfProduct(infile.getInputStream());
+            dummyDataRepository.saveAll(dummyDataList);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 }

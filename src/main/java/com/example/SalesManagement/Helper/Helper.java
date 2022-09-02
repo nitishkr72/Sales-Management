@@ -1,6 +1,5 @@
 package com.example.SalesManagement.Helper;
 
-import com.example.SalesManagement.Model.ProductSold;
 import com.example.SalesManagement.Model.dummyData;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.DataFormatter;
